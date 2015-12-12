@@ -1,5 +1,5 @@
 import logging
-import urllib
+from six.moves.urllib.parse import urlsplit
 
 from .api.service import Service
 from .api.xsd import device as deviceParser
@@ -17,8 +17,8 @@ class Device(object):
     def __init__(self, url):
         self._state = None
         base_url = url.rsplit('/', 1)[0]
-        self.host = urllib.parse(url).hostname
-        #self.port = urllib.parse(url).port
+        self.host = urlsplit(url).hostname
+        #self.port = urlsplit(url).port
         xml = requests_get(url)
         self._config = deviceParser.parseString(xml.content).device
         sl = self._config.serviceList
